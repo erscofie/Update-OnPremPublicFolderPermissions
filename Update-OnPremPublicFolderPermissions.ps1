@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Bulk update Public Folder permissions on Exchange Server 2019.
+    Bulk update Public Folder permissions on Exchange Server 2019/SE.
 
 .DESCRIPTION
     This script sets the *exact* permissions for one or more users on a specified Public Folder:
@@ -18,7 +18,7 @@
     The *only* permission(s) the users should have (e.g., Editor, Owner, Reviewer).
     If not specified or set to "None", all permissions for the users will be removed.
 
-.PARAMETER Recursive
+.PARAMETER Recurse
     If present, permissions are applied to all child public folders recursively.
 
 .EXAMPLE
@@ -43,7 +43,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$Permission,
 
-    [switch]$Recursive
+    [switch]$Recurse
 )
 
 function Set-ExactFolderPermission {
@@ -88,7 +88,7 @@ function Set-ExactFolderPermission {
     }
 }
 
-if ($Recursive) {
+if ($Recurse) {
     Write-Host "Applying permissions recursively to $FolderPath and all child folders..."
     # Get all child folders including the root specified
     $allFolders = Get-PublicFolder -Identity $FolderPath -Recurse | Select-Object -ExpandProperty Identity
